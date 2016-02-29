@@ -7,8 +7,13 @@ RSpec.describe Tic::Board do
       expect(board.free_moves).to eq(9)
     end
     it 'returns all the moves on the board' do
-      expect(board.moves.count).to eq(9)    
-      expect(board.moves.first).to eq(nil)
+      expect(board.moves.count).to eq(9)
+      first_move = board.moves.first
+      expect(first_move.location).to eq({row: 1, col: 1})
+      expect(first_move.empty?).to eq(true)
+      last_move = board.moves.last
+      expect(last_move.location).to eq({row: 3, col: 3})
+      expect(last_move.empty?).to eq(true)
     end
     it 'returns initializes next player' do
       expect(board.next_player).to eq(:X)
@@ -50,6 +55,21 @@ RSpec.describe Tic::Board do
       board.clear(:O)
       expect(board.free_moves).to eq(9)
       expect(board.next_player).to eq(:O)
+    end
+  end
+  context "winning column move" do
+    #-XO 
+    #-XO
+    #-X-
+    board = Tic::Board::new(3,3)
+    board.make_move(1,2)
+    board.make_move(1,3)
+    board.make_move(2,2)
+    board.make_move(2,3)
+    board.make_move(3,2)
+    puts board.moves.inspect
+    it 'returns winner X' do
+      expect(board.check_winner()).to eq(:X)
     end
   end
 end
