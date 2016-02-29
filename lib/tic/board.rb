@@ -4,10 +4,10 @@ module Tic
   class Board
     attr_reader :moves
     attr_reader :next_player
-    def initialize(rows = 3, cols = 3)
+    def initialize(rows = 3, cols = 3, first_player = :X)
       @rows = rows
       @cols = cols
-      @next_player = :X
+      @next_player = first_player.to_sym
       @moves = init_moves
     end
 
@@ -61,7 +61,7 @@ module Tic
 
     def check_diaganals
       diag= []
-      (0..board_size).step(@cols+1).each do | i |
+      (0..board_size).step(@cols+1).each do | i | 
         diag.push(@moves[i]) if !@moves[i].empty?
       end
       if diag.count == @rows 

@@ -67,9 +67,37 @@ RSpec.describe Tic::Board do
     board.make_move(2,2)
     board.make_move(2,3)
     board.make_move(3,2)
-    puts board.moves.inspect
     it 'returns winner X' do
-      expect(board.check_winner()).to eq(:X)
+      expect(board.check_winner).to eq(:X)
+    end
+  end
+  context "winning row move" do
+  #X-- 
+  #-X-
+  #OOO
+  board = Tic::Board::new(3,3,"O")
+  board.make_move(3,1)
+  board.make_move(1,1)
+  board.make_move(3,3)
+  board.make_move(2,2)
+  board.make_move(3,2)
+    it 'returns winner O' do
+      expect(board.check_winner).to eq(:O)
+    end
+  end
+  context "winning diaganal move" do
+  #O-- 
+  #XO-
+  #XXO
+  board = Tic::Board::new(3,3)
+  board.make_move(2,1)
+  board.make_move(1,1)
+  board.make_move(3,1)
+  board.make_move(3,3)
+  board.make_move(3,2)
+  board.make_move(2,2)
+    it 'returns winner O' do
+      expect(board.check_winner).to eq(:O)
     end
   end
 end
