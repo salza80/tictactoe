@@ -68,7 +68,7 @@ RSpec.describe Tic::Board do
     board.make_move(2,3)
     board.make_move(3,2)
     it 'returns winner X' do
-      expect(board.check_winner).to eq(:X)
+      expect(board.game_status).to eq(:X)
     end
   end
   context "winning row move" do
@@ -82,7 +82,7 @@ RSpec.describe Tic::Board do
   board.make_move(2,2)
   board.make_move(3,2)
     it 'returns winner O' do
-      expect(board.check_winner).to eq(:O)
+      expect(board.game_status).to eq(:O)
     end
   end
   context "winning diaganal move" do
@@ -97,7 +97,38 @@ RSpec.describe Tic::Board do
   board.make_move(3,2)
   board.make_move(2,2)
     it 'returns winner O' do
-      expect(board.check_winner).to eq(:O)
+      expect(board.game_status).to eq(:O)
+    end
+  end
+  context "Draw  move" do
+  #XOX 
+  #XXO
+  #OXO
+  board = Tic::Board::new(3,3)
+  board.make_move(1,1)
+  board.make_move(1,2)
+  board.make_move(1,3)
+  board.make_move(2,3)
+  board.make_move(2,1)
+  board.make_move(3,1)
+  board.make_move(2,2)
+  board.make_move(3,3)
+  board.make_move(3,2)
+    it 'returns :D as draw' do
+      expect(board.game_status).to eq(:D)
+    end
+  end
+  context "no complete game  move" do
+  #XOX
+  #O--
+  #---
+  board = Tic::Board::new(3,3)
+  board.make_move(1,1)
+  board.make_move(1,2)
+  board.make_move(1,3)
+  board.make_move(2,1)
+    it 'returns :NC as status is not commplete' do
+      expect(board.game_status).to eq(:NC)
     end
   end
 end

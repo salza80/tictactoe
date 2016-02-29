@@ -28,8 +28,18 @@ module Tic
       @moves = init_moves
       @next_player = next_player
     end
+    def game_status
+      winner = check_winner
+      return winner if winner
+      return :D if free_moves == 0
+      :NC
+    end
 
-    def check_winner
+
+    private 
+
+    #checking for winners
+      def check_winner
       (1..@rows).each do | i |
         result = check_row(i)
         return result if result
@@ -40,11 +50,6 @@ module Tic
       end
       check_diaganals
     end
-
-
-    private 
-
-    #checking for winners
     def check_row(row)
       this_row = @moves.select{| move | move.location[:row] == row && !move.empty?}
       return false if this_row.count != @cols
