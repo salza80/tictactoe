@@ -52,16 +52,12 @@ module Tic
     end
     def check_row(row)
       this_row = @moves.select{| move | move.location[:row] == row && !move.empty?}
-      return false if this_row.count != @cols
-      players = this_row.map{| move | move.player}
-      players.first if players.uniq.count == 1
+      is_winner?(this_row)
     end
 
     def check_col(col)
       this_col = @moves.select{| move | move.location[:col]  == col && !move.empty?}
-      return false if this_col.count != @rows
-      players = this_col.map{| move | move.player}
-      players.first if players.uniq.count == 1
+      is_winner?(this_col)
     end
 
     def check_diaganals
@@ -69,16 +65,18 @@ module Tic
       (0..board_size).step(@cols+1).each do | i | 
         diag.push(@moves[i]) if !@moves[i].empty?
       end
-      if diag.count == @rows 
-        players = diag.map{ |move| move.player}
-        return players.first if players.uniq.count == 1
-      end
+      winner = is_winner?(diag)
+      return winner if winner
       diag = []
       ((@cols-1)..(board_size-(@cols-1))).step(@cols-1) do | i |
         diag.push(@moves[i]) if !@moves[i].empty?
       end
-      return false if diag.count != @rows
-      players = diag.map{ |move| move.player}
+      is_winner?(diag)
+    end
+
+    def is_winner?(line)
+      return false if line.count != @rows
+      players = line.map{ |move| move.player}
       players.first if players.uniq.count == 1
     end
 
